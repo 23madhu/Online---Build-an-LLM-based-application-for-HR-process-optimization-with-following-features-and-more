@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Registration page</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+	<link href="register.css" rel="stylesheet">
+  <style>
+    body,
+    html {
+      height: 100%;
+    }
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, #db0d0d, #08f01f);
+      z-index: -1;
+      animation: slideBackground 5s linear infinite;
+  }
+    @keyframes slideBackground {
+      0% {
+          transform: translateX(-50%) translateY(-50%) rotate(0deg);
+      }
+      100% {
+          transform: translateX(-50%) translateY(-50%) rotate(360deg);
+      }
+  }
+
+    @keyframes backgroundAnimation {
+      0% {
+        background-color: #ff99cc; /* Start color */
+      }
+      25% {
+        background-color: #33ccff; /* Color at 25% of the animation */
+      }
+      50% {
+        background-color: #4B79A1; /* Color at 50% of the animation */
+      }
+      75% {
+        background-color: #283E51; /* Color at 75% of the animation */
+      }
+      100% {
+        background-color: #ff99cc; /* End color (same as the start) */
+      }
+    }
+
+    .register-bg-animation {
+      background: linear-gradient(to right, #ff99cc, #33ccff);
+      background-size: 400% 400%;
+      animation: gradient 15s ease infinite;
+    }
+
+    @keyframes gradient {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .register-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+
+    .register-form-wrap {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      width: 30px;
+      max-width: 30%;
+    }
+
+    .register-form-wrap h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .login-link {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .login-link a {
+      color: #007bff;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+          <span class="navbar-toggler-icon"></span> 
+        </button>	
+        <div class="collapse navbar-collapse" id="navbarResponsive"> 
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="index.html">Home</a>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link" href="login.html">Login</a>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link" href="register.html">Registration</a>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link" href="about.html">About</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  <div class="register-bg-animation" style="height: 100%;">
+    <div class="register-container">
+      <div class="register-form-wrap col-md-6">
+        <h2>Register</h2>
+        <form>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name" required>
+              </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+          </div>
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" required>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+          </div>
+          <button type="submit"  id="submitData" class="btn btn-primary btn-block">Register</button>
+          <div class="login-link">
+            <p>Already have an account? <a href="login.html">Login</a></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+ 
+<div id="successMessage" style="display: none;">
+    <p>Registration successful!</p>
+  </div>
+  
+</body>
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
+    import { getDatabase, set, ref } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-database.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
+  
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyC4A8Sp-DUJuyBrAfPMdd46IRkflwir3g0",
+      authDomain: "authentication-16ce3.firebaseapp.com",
+      projectId: "authentication-16ce3",
+      storageBucket: "authentication-16ce3.appspot.com",
+      messagingSenderId: "235216214563",
+      appId: "1:235216214563:web:0d76de477a9494c0b26f96"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    const auth = getAuth();
+  
+    const submitData = document.getElementById("submitData");
+    const successMessage = document.getElementById("successMessage");
+  
+    submitData.addEventListener("click", (e) => {
+      e.preventDefault();
+  
+      var email = document.getElementById("email").value;
+      var password = document.getElementById("password").value;
+  
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          // ...
+          set(ref(database, 'users/' + user.uid),{
+            email : email,
+            password : password
+            
+          })
+          alert("User created successfully!");
+          successMessage.style.display = "block"; // Show the success message
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // ...
+          alert(errorMessage);
+        });
+    });
+  </script>
+  </html>
+

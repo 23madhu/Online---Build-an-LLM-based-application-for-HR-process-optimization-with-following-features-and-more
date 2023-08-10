@@ -1,0 +1,62 @@
+/* styles.css */
+
+/* Add any custom styling here, if needed */
+
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #ff99cc, #33ccff);
+  background-size: 400% 400%;
+  animation: gradientAnimation 10s infinite alternate;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+
+@keyframes gradientAnimation {
+  from { background: linear-gradient(to right, #4B79A1, #283E51); }
+  to { background: linear-gradient(to right, #283E51, #4B79A1); }
+}
+
+.login-container {
+  max-width: 400px;
+  padding: 20px;
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  animation: fadeInAnimation 1s;
+}
+
+.header-container {
+  text-align: center;
+  color: #fff;
+  font-size: 24px;
+  animation: fadeInAnimation 1s;
+}
+
+@keyframes fadeInAnimation {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.loading-container {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  border-top: 5px solid #fff;
+  border-radius: 50%;
+  animation: spinAnimation 1s linear infinite;
+}
+
+@keyframes spinAnimation {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

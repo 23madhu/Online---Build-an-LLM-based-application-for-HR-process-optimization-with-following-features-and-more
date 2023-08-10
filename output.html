@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>resumescore page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+    <link href="home.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f9f9f9;
+            overflow: hidden;
+        }
+
+        /* Background Animation */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #db0d0d, #08f01f);
+            z-index: -1;
+            animation: slideBackground 5s linear infinite;
+        }
+
+        @keyframes slideBackground {
+            0% {
+                transform: translateX(-50%) translateY(-50%) rotate(0deg);
+            }
+            100% {
+                transform: translateX(-50%) translateY(-50%) rotate(360deg);
+            }
+        }
+@keyframes slideInFromRight {
+            0% {
+              transform: translateX(100%) translateY(-50%) rotate(0deg);
+            }
+            100% {
+              transform: translateX(-50%) translateY(-50%) rotate(360deg);
+            }
+          }
+
+          @keyframes backgroundAnimation {
+            0% {
+              background-color: #ff99cc; /* Start color */
+            }
+            25% {
+              background-color: #33ccff; /* Color at 25% of the animation */
+            }
+            50% {
+              background-color: #4B79A1; /* Color at 50% of the animation */
+            }
+            75% {
+              background-color: #283E51; /* Color at 75% of the animation */
+            }
+            100% {
+              background-color: #ff99cc; /* End color (same as the start) */
+            }
+          }
+        
+          
+          /* Apply the backgroundAnimation to the body element */
+          body {
+            animation: backgroundAnimation 10s linear infinite; /* Adjust the animation duration as needed */
+          }
+          .card {
+            border: none; /* Remove the card border */
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2); /* Add a shadow for emphasis */
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .card:hover {
+            transform: scale(1.05); /* Enlarge the card on hover */
+        }
+          
+          
+          .element-to-animate-right {
+            animation: slideInFromRight 8s linear infinite; 
+          }
+
+    
+        .card {
+            border: none; /* Remove the card border */
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2); /* Add a shadow for emphasis */
+            transition: transform 0.3s ease-in-out;
+            margin-left: 100px;
+        }
+
+        .card:hover {
+            transform: scale(1.05); /* Enlarge the card on hover */
+        }
+    </style>
+</head>
+<body>
+    <!-- Your existing HTML content... -->
+
+    <div class="container-fluid paddding">
+        <div class="row padding">
+            <div class="col-md-4">
+                <div class="card">
+                    <img class="card-img-top" src="img/team3.png">
+                    <div class="card-body">
+                        <h4 class="card-title">Get Resume Score</h4>
+                        <br>
+                        <p class="card-text">Hi candidate, Thank you for participating. We have to inform you that if you get shortlisted for the next round, you will receive a message through email.</p>
+                        <p class="card-text">In that email, you will have details about the next round according to our perspective.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

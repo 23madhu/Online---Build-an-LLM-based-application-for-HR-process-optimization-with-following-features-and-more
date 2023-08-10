@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Firebase PDF Upload</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+	<script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            
+            background-color: #f9f9f9;
+            overflow: hidden;
+        }
+
+        /* Background Animation */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #db0d0d, #08f01f);
+            z-index: -1;
+            animation: slideBackground 5s linear infinite;
+        }
+
+        @keyframes slideBackground {
+            0% {
+                transform: translateX(-50%) translateY(-50%) rotate(0deg);
+            }
+            100% {
+                transform: translateX(-50%) translateY(-50%) rotate(360deg);
+            }
+        }
+        @keyframes slideInFromRight {
+            0% {
+              transform: translateX(100%) translateY(-50%) rotate(0deg);
+            }
+            100% {
+              transform: translateX(-50%) translateY(-50%) rotate(360deg);
+            }
+          }
+
+          @keyframes backgroundAnimation {
+            0% {
+              background-color: #ff99cc; /* Start color */
+            }
+            25% {
+              background-color: #33ccff; /* Color at 25% of the animation */
+            }
+            50% {
+              background-color: #4B79A1; /* Color at 50% of the animation */
+            }
+            75% {
+              background-color: #283E51; /* Color at 75% of the animation */
+            }
+            100% {
+              background-color: #ff99cc; /* End color (same as the start) */
+            }
+          }
+          
+          /* Apply the backgroundAnimation to the body element */
+          body {
+            animation: backgroundAnimation 10s linear infinite; /* Adjust the animation duration as needed */
+          }
+          
+          
+          .element-to-animate-right {
+            animation: slideInFromRight 8s linear infinite; 
+          }
+
+       
+
+        .pdfUpload {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin-left: 20px;
+            width: 90%;
+        }
+
+        .inp {
+            display: none;
+        }
+
+        .selectPDF {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .selectPDF:hover {
+            background-color: #0056b3;
+        }
+
+        .filedata {
+            display: block;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .upload {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .upload:hover {
+            background-color: #45a049;
+        }
+
+        .loading {
+            display: none;
+            margin-top: 20px;
+            font-size: 14px;
+        }
+        .fill{
+            background-color: #af70c4;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+            
+        }
+        .fill:hover{
+            background-color: #1490a7;
+        }
+
+        .pdfLink {
+            display: none;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .pdfLink:hover {
+            background-color: #0056b3;
+        }
+
+        .progressContainer {
+            margin-top: 20px;
+        }
+
+        .progressBar {
+            height: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            overflow: hidden;
+            .progressContainer {
+              margin-top: 20px;
+          }
+      
+          .progressBar {
+              height: 10px;
+              background-color: #d22222;
+              border-radius: 5px;
+              overflow: hidden;
+          }
+      
+          
+          .progressBar::after {
+              content: "";
+              display: block;
+              height: 100%;
+              background-color: #007bff;
+              border-radius: 5px;
+              /* We will use this property to set the width dynamically */
+              width: 0;
+              transition: width 0.3s ease;
+          }
+      
+          .progressText {
+              display: block;
+              margin-top: 10px;
+              font-size: 14px;
+              font-weight: bold;
+          }
+        }
+
+
+        /* Responsive styles */
+        @media (max-width: 600px) {
+            .pdfUpload {
+                max-width: 90%;
+            }
+        }
+    </style>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-storage.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-md navbar-light bg-light sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+                <span class="navbar-toggler-icon"></span> 
+            </button>	
+            <div class="collapse navbar-collapse" id="navbarResponsive"> 
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="login.html">Login</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="register.html">Registration</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="about.html">About</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="pdfUpload">
+        <input type="file" class="inp" accept=".pdf" onchange="getPDFData(event)" />
+        <button onclick="selectPDF()"  class="selectPDF" name="action" value="selct_pdf">Select PDF</button>
+        <span class="filedata"></span>
+        <button onclick="uploadPDF()" class="upload" name="action" value="upload">Upload</button>
+        <span class="loading">Uploading...</span>
+        <div class="progressContainer">
+            <div class="progressBar" id="progressBar"></div>
+            <span class="progressText" id="progressText"></span>
+        </div>
+        <a class="pdfLink" target="_blank" href="">View PDF</a>
+        <form action="/submit_form" method="post" enctype="multipart/form-data">
+        <button type="submit" class="fill" name="action" value="submit">Submit</button>
+        </form>
+    </div>
+    </form>
+    <script>
+        const firebaseConfig = {
+          apiKey: "AIzaSyC4A8Sp-DUJuyBrAfPMdd46IRkflwir3g0",
+          authDomain: "authentication-16ce3.firebaseapp.com",
+          projectId: "authentication-16ce3",
+          storageBucket: "authentication-16ce3.appspot.com",
+          messagingSenderId: "235216214563",
+          appId: "1:235216214563:web:0d76de477a9494c0b26f96"
+        
+        };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const storage = firebase.storage();
+        const inp = document.querySelector(".inp");
+        const pdfLink = document.querySelector(".pdfLink");
+        const fileData = document.querySelector(".filedata");
+        const loading = document.querySelector(".loading");
+        const progressBar = document.getElementById("progressBar");
+        const progressText = document.getElementById("progressText");
+        let file;
+        let fileName;
+
+        const selectPDF = () => {
+            inp.click();
+        };
+
+        const getPDFData = (e) => {
+            file = e.target.files[0];
+            fileName = Math.round(Math.random() * 9999) + file.name;
+            if (fileName) {
+                fileData.style.display = "block";
+            }
+            fileData.innerHTML = fileName;
+            console.log(file, fileName);
+        };
+
+        const uploadPDF = () => {
+            loading.style.display = "block";
+            const storageRef = storage.ref().child("mypdfs");
+            const pdfRef = storageRef.child(fileName);
+            const uploadtask = pdfRef.put(file);
+
+            uploadtask.on(
+                "state_changed",
+                (snapshot) => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    progressBar.style.width = progress + "%";
+                    progressText.textContent = "Uploading: " + progress.toFixed(2) + "%";
+                },
+                (error) => {
+                    console.log(error);
+                },
+                () => {
+                    storage
+                        .ref("mypdfs")
+                        .child(fileName)
+                        .getDownloadURL()
+                        .then((url) => {
+                            console.log("URL", url);
+                            if (!url) {
+                                pdfLink.style.display = "none";
+                            } else {
+                                pdfLink.style.display = "block";
+                                loading.style.display = "none";
+                            }
+                            pdfLink.setAttribute("href", url);
+                        });
+                    console.log("PDF Uploaded Successfully");
+                }
+            );
+        };
+    </script>
+    <script>
+    import { getStorage, ref, getDownloadURL } from "https://www.gstatic.com/firebasejs/8.6.8/firebase-storage.js";
+
+// Create a reference to the file we want to download
+const storage = getStorage();
+const starsRef = ref(storage, "gs://authentication-16ce3.appspot.com/mypdfs");
+
+// Get the download URL
+getDownloadURL(starsRef)
+  .then((url) => {
+    // Insert url into an <img> tag to "download"
+  })
+  .catch((error) => {
+    // A full list of error codes is available at
+    // https://firebase.google.com/docs/storage/web/handle-errors
+    switch (error.code) {
+      case 'storage/object-not-found':
+        // File doesn't exist
+        break;
+      case 'storage/unauthorized':
+        // User doesn't have permission to access the object
+        break;
+      case 'storage/canceled':
+        // User canceled the upload
+        break;
+
+      // ...
+
+      case 'storage/unknown':
+        // Unknown error occurred, inspect the server response
+        break;
+    }
+  });
+</script>
+</body>
+</html>

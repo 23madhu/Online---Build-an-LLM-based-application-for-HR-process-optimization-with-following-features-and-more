@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>login page</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+  <link href="login.css" rel="stylesheet">
+</head>
+<body>
+  <!-- Navigation bar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#"></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+        <span class="navbar-toggler-icon"></span> 
+      </button>	
+      <div class="collapse navbar-collapse" id="navbarResponsive"> 
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="index.html">Home</a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="login.html">Login</a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="register.html">Registration</a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="about.html">About</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- The container with the login form and loading spinner -->
+  <div class="container d-flex justify-content-center align-items-center flex-column" style="height: calc(100vh - 56px);"> <!-- Subtracting the height of the navigation bar -->
+    <div class="login-container">
+      <h1 class="text-center">Login Form</h1>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" id="email" class="form-control" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="password" id="password" class="form-control" required>
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary">Login</button>
+        </div>
+        <a href="forgetpassword.html">Forget Password</a>
+      </form>
+    </div>
+
+    <div class="loading-container" id="loadingContainer">
+      <div class="loading-spinner"></div>
+    </div>
+  </div>
+
+    <script type="module">
+        // Import Firebase SDK modules
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
+        import { getDatabase, ref, get, set } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-database.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-auth.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyC4A8Sp-DUJuyBrAfPMdd46IRkflwir3g0",
+            authDomain: "authentication-16ce3.firebaseapp.com",
+            projectId: "authentication-16ce3",
+            storageBucket: "authentication-16ce3.appspot.com",
+            messagingSenderId: "235216214563",
+            appId: "1:235216214563:web:0d76de477a9494c0b26f96"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const auth = getAuth();
+
+        // Get a reference to the login form
+        const loginForm = document.getElementById("loginForm");
+
+        // Add a submit event listener to the form
+        loginForm.addEventListener("submit", async (e) => {
+            e.preventDefault(); // Prevent the default form submission behavior
+
+            // Get the email and password from the input fields
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            try {
+                // Try to sign in the user with the provided email and password
+                await signInWithEmailAndPassword(auth, email, password);
+
+                // Redirect the user to the desired page after successful login
+                window.location.href = "fileupload.html";
+            } catch (error) {
+                // If there's an error during login (e.g., incorrect email/password)
+                // Show an alert message
+                alert("Invalid email or password. Please try again.");
+            }
+        });
+    </script>
+</body>
+</html>
